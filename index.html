@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Brain, Your Story - Neuroscience Adventure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-teal: #5EEAD4;
+            --deep-teal: #14B8A6;
+            --soft-purple: #C084FC;
+            --warm-rose: #FDA4AF;
+            --calm-blue: #93C5FD;
+            --electric-blue: #60A5FA;
+            --warm-amber: #FBBF24;
+            --success-green: #10B981;
+            --midnight: #1E293B;
+            --slate: #475569;
+            --pearl: #F8FAFC;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #5EEAD4 0%, #93C5FD 100%);
+            --gradient-warm: linear-gradient(135deg, #FDA4AF 0%, #C084FC 100%);
+            --gradient-neural: linear-gradient(135deg, #60A5FA 0%, #C084FC 100%);
+            --gradient-success: linear-gradient(135deg, #10B981 0%, #5EEAD4 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            min-height: 100vh;
+            color: var(--midnight);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating background elements */
+        .bg-circle {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-circle1 {
+            width: 300px;
+            height: 300px;
+            background: var(--electric-blue);
+            top: -100px;
+            right: -100px;
+        }
+
+        .bg-circle2 {
+            width: 400px;
+            height: 400px;
+            background: var(--soft-purple);
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -5s;
+        }
+
+        .bg-circle3 {
+            width: 250px;
+            height: 250px;
+            background: var(--primary-teal);
+            top: 50%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Neural firing animation */
+        .neural-spark {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: var(--electric-blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: spark 3s infinite ease-in-out;
+            box-shadow: 0 0 10px var(--electric-blue);
+        }
+
+        @keyframes spark {
+            0% { opacity: 0; transform: translateY(0); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100vh); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* XP HEADER BAR */
+        .xp-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 1rem 2rem;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .xp-info {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .xp-counter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--gradient-neural);
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .xp-icon {
+            font-size: 1.2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .level-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--gradient-success);
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .brain-power-meter {
+            flex: 1;
+            min-width: 200px;
+            max-width: 400px;
+        }
+
+        .brain-power-label {
+            font-size: 0.9rem;
+            color: var(--slate);
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .brain-power-bar {
+            height: 20px;
+            background: rgba(94, 234, 212, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .brain-power-fill {
+            height: 100%;
+            background: var(--gradient-neural);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brain-power-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.3) 50%, 
+                transparent 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* CELEBRATION OVERLAY */
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .celebration-overlay.show {
+            display: flex;
+        }
+
+        .celebration-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            animation: bounceIn 0.6s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .celebration-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: rotate 0.6s ease;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg) scale(0); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .celebration-title {
+            font-size: 2rem;
+            color: var(--deep-teal);
+            margin-bottom: 0.5rem;
+        }
+
+        .celebration-text {
+            color: var(--slate);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .celebration-xp {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient-neural);
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-celebrate {
+            padding: 0.75rem 2rem;
+            background: var(--gradient-success);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-celebrate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Crisis Resources Banner */
+        .crisis-banner {
+            background: linear-gradient(135deg, rgba(253, 164, 175, 0.15) 0%, rgba(192, 132, 252, 0.15) 100%);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 2px solid rgba(253, 164, 175, 0.3);
+            text-align: center;
+        }
+
+        .crisis-banner p {
+            color: var(--slate);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .crisis-banner strong {
+            color: var(--midnight);
+        }
+
+        /* Opening Meditation */
+        .meditation-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .meditation-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-neural);
+        }
+
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            margin: 2rem auto;
+            border-radius: 50%;
+            background: var(--gradient-2);
+            opacity: 0.3;
+            animation: breathe 6s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.15; }
+            50% { transform: scale(1.3); opacity: 0.3; }
+        }
+
+        .quote {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--slate);
+            line-height: 1.8;
+            margin: 1rem 0;
+        }
+
+        .quote-author {
+            color: var(--deep-teal);
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: var(--gradient-neural);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: var(--slate);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        /* Navigation Pills */
+        .nav-pills {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-pill {
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            background: white;
+            border: 2px solid transparent;
+            color: var(--slate);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .nav-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .nav-pill.active {
+            background: var(--gradient-neural);
+            color: white;
+            border-color: transparent;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+        }
+
+        .card h2 {
+            color: var(--midnight);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-neural);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* LOCKED/UNLOCKED CONTENT */
+        .locked-content {
+            position: relative;
+            filter: blur(3px);
+            opacity: 0.5;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .unlock-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            z-index: 10;
+            filter: none;
+        }
+
+        .unlock-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .unlock-text {
+            color: var(--slate);
+            margin-bottom: 0.5rem;
+        }
+
+        .unlock-requirement {
+            color: var(--deep-teal);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Brain Map */
+        .brain-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .brain-svg {
+            max-width: 500px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .brain-region {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            stroke: var(--deep-teal);
+            stroke-width: 2;
+        }
+
+        .brain-region:hover:not(.locked-region) {
+            opacity: 0.8;
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 10px rgba(94, 234, 212, 0.5));
+        }
+
+        .brain-region.active {
+            fill: var(--primary-teal);
+            filter: drop-shadow(0 0 15px rgba(94, 234, 212, 0.8));
+        }
+
+        .brain-region.locked-region {
+            fill: rgba(100, 100, 100, 0.2);
+            cursor: not-allowed;
+        }
+
+        .brain-region.unlocked {
+            animation: unlockPulse 0.8s ease;
+        }
+
+        @keyframes unlockPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .brain-info {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            display: none;
+        }
+
+        .brain-info.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brain-info h3 {
+            color: var(--deep-teal);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .brain-info p {
+            color: var(--slate);
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        /* DISCUSSION QUESTIONS */
+        .discussion-section {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(253, 164, 175, 0.08) 0%, rgba(192, 132, 252, 0.08) 100%);
+            border-radius: 16px;
+            border-left: 4px solid var(--warm-rose);
+        }
+
+        .discussion-section h4 {
+            color: var(--warm-rose);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .discussion-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .discussion-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 3px solid var(--soft-purple);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .discussion-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .discussion-card p {
+            color: var(--slate);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .discussion-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--soft-purple);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* QUIZ SECTION */
+        .quiz-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.08) 0%, rgba(192, 132, 252, 0.08) 100%);
+            border-radius: 16px;
+        }
+
+        .quiz-question {
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-question h4 {
+            color: var(--electric-blue);
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--electric-blue);
+            transform: translateX(5px);
+        }
+
+        .quiz-option.correct {
+            background: var(--gradient-success);
+            color: white;
+            border-color: var(--success-green);
+        }
+
+        .quiz-option.incorrect {
+            background: rgba(253, 164, 175, 0.2);
+            border-color: var(--warm-rose);
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .quiz-feedback.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* SCENARIO CARDS */
+        .scenario-container {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .scenario-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .scenario-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-warm);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .scenario-content {
+            flex: 1;
+        }
+
+        .scenario-situation {
+            color: var(--slate);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .scenario-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .scenario-choice {
+            padding: 1.25rem;
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%);
+            border-radius: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scenario-choice:hover {
+            border-color: var(--primary-teal);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .scenario-choice h5 {
+            color: var(--deep-teal);
+            margin-bottom: 0.5rem;
+        }
+
+        .scenario-choice p {
+            color: var(--slate);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .scenario-result {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid var(--primary-teal);
+            display: none;
+        }
+
+        .scenario-result.show {
+            display: block;
+            animation: slideUp 0.5s ease;
+        }
+
+        .scenario-result h4 {
+            color: var(--deep-teal);
+            margin-bottom: 1rem;
+        }
+
+        /* NEUROTRANSMITTER CARDS - COLLECTIBLE */
+        .nt-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .nt-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .nt-card.locked-card {
+            opacity: 0.4;
+            filter: grayscale(100%);
+            cursor: not-allowed;
+        }
+
+        .nt-card.unlocked-card {
+            animation: cardFlip 0.8s ease;
+        }
+
+        @keyframes cardFlip {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(90deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        .nt-card:not(.locked-card):hover {
+            transform: translateY(-8px) rotate(1deg);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .nt-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nt-symbol {
+            font-size: 2rem;
+        }
+
+        .nt-card.dopamine { border-color: #FBBF24; }
+        .nt-card.serotonin { border-color: #60A5FA; }
+        .nt-card.gaba { border-color: #C084FC; }
+        .nt-card.norepinephrine { border-color: #FDA4AF; }
+        .nt-card.oxytocin { border-color: #5EEAD4; }
+
+        .nt-locked-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        .nt-content {
+            max-height: 80px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .nt-content.expanded {
+            max-height: 1000px;
+        }
+
+        .nt-content p {
+            color: var(--slate);
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .nt-content strong {
+            color: var(--deep-teal);
+            display: block;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .nt-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .nt-content li {
+            padding: 0.25rem 0;
+            color: var(--slate);
+            font-size: 0.95rem;
+        }
+
+        .nt-content li::before {
+            content: '✦ ';
+            color: var(--deep-teal);
+            margin-right: 0.5rem;
+        }
+
+        /* COLLECTIBLES SHOWCASE */
+        .collectibles-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .collectibles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .collectible-item {
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%);
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .collectible-item.unlocked {
+            background: var(--gradient-2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(94, 234, 212, 0.3);
+        }
+
+        .collectible-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .collectible-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 2rem;
+            background: var(--gradient-neural);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(96, 165, 250, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(96, 165, 250, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--deep-teal);
+            border: 2px solid var(--primary-teal);
+            margin-left: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(94, 234, 212, 0.1);
+        }
+
+        /* GROUP ACTIVITY CARDS */
+        .group-activity-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.08) 0%, rgba(147, 197, 253, 0.08) 100%);
+            border-radius: 16px;
+            border: 2px solid var(--primary-teal);
+        }
+
+        .group-activity-section h4 {
+            color: var(--deep-teal);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .activity-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .activity-card {
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        .activity-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--gradient-2);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .activity-card h5 {
+            color: var(--deep-teal);
+            margin-bottom: 0.75rem;
+        }
+
+        .activity-card p {
+            color: var(--slate);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 1rem; }
+            .card { padding: 1.5rem; }
+            .nav-pills { flex-direction: column; align-items: center; }
+            .meditation-section { padding: 2rem 1.5rem; }
+            .xp-header { padding: 1rem; }
+            .xp-info { flex-direction: column; width: 100%; }
+            .brain-power-meter { max-width: 100%; }
+        }
+
+        /* Info boxes */
+        .info-box {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(94, 234, 212, 0.05) 0%, rgba(147, 197, 253, 0.05) 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-teal);
+            margin: 1.5rem 0;
+        }
+
+        .info-box p {
+            color: var(--slate);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .info-box strong {
+            color: var(--deep-teal);
+        }
+
+        /* Deep dive expandable */
+        .deep-dive {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-teal);
+            display: none;
+        }
+
+        .deep-dive.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .expand-btn {
+            background: none;
+            border: none;
+            color: var(--deep-teal);
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0.5rem 0;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .expand-btn:hover {
+            color: var(--primary-teal);
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="bg-circle bg-circle1"></div>
+    <div class="bg-circle bg-circle2"></div>
+    <div class="bg-circle bg-circle3"></div>
+
+    <!-- Neural Sparks -->
+    <div class="neural-spark" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="neural-spark" style="left: 30%; animation-delay: 1s;"></div>
+    <div class="neural-spark" style="left: 50%; animation-delay: 2s;"></div>
+    <div class="neural-spark" style="left: 70%; animation-delay: 1.5s;"></div>
+    <div class="neural-spark" style="left: 90%; animation-delay: 0.5s;"></div>
+
+    <!-- XP HEADER BAR -->
+    <div class="xp-header">
+        <div class="xp-info">
+            <div class="xp-counter">
+                <span class="xp-icon">⚡</span>
+                <span id="xpDisplay">0 NP</span>
+            </div>
+            <div class="level-badge">
+                <span>◈</span>
+                <span id="levelDisplay">Level 1</span>
+            </div>
+        </div>
+        <div class="brain-power-meter">
+            <div class="brain-power-label">Brain Power Progress</div>
+            <div class="brain-power-bar">
+                <div class="brain-power-fill" id="brainPowerFill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CELEBRATION OVERLAY -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-content">
+            <div class="celebration-icon" id="celebrationIcon">⚡</div>
+            <h2 class="celebration-title" id="celebrationTitle">Achievement Unlocked!</h2>
+            <p class="celebration-text" id="celebrationText">You've earned a reward!</p>
+            <div class="celebration-xp" id="celebrationXP">+50 NP</div>
+            <button class="btn-celebrate" onclick="closeCelebration()">Continue Journey</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Crisis Resources Banner -->
+        <div class="crisis-banner">
+            <p><strong>You are not alone.</strong> If you're in crisis: <strong>988 Suicide & Crisis Lifeline</strong> (call/text) • <strong>Crisis Text Line: Text "HELLO" to 741741</strong></p>
+        </div>
+
+        <!-- Opening Meditation -->
+        <div class="meditation-section">
+            <h2 style="color: var(--deep-teal); margin-bottom: 1rem;">A Moment to Center</h2>
+            <p style="color: var(--slate); line-height: 1.7; margin-bottom: 1.5rem;">
+                Before we explore the magnificent landscape of your brain, let's pause. Take three deep breaths. 
+                Notice how your brain is coordinating every sensation, thought, and feeling in this very moment.
+            </p>
+            <div class="breathing-circle"></div>
+            <div class="quote">
+                "The brain is wider than the sky."
+            </div>
+            <div class="quote-author">— Emily Dickinson</div>
+            <p style="color: var(--slate); margin-top: 1.5rem; font-size: 0.95rem;">
+                You're about to embark on a journey of understanding—not just learning facts, but connecting with the story your nervous system tells every day.
+            </p>
+            <button class="btn" onclick="startJourney()" style="margin-top: 1.5rem;">Begin Your Brain Adventure</button>
+        </div>
+
+        <!-- Header -->
+        <div class="header" id="mainHeader" style="display: none;">
+            <h1>Your Brain, Your Story</h1>
+            <p class="subtitle">An Interactive Neuroscience Adventure</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-pills" id="navigation" style="display: none;">
+            <button class="nav-pill active" onclick="showPage(0)">
+                ◈ Explore & Discover
+            </button>
+            <button class="nav-pill" onclick="showPage(1)">
+                ◉ Your Collection
+            </button>
+            <button class="nav-pill" onclick="showPage(2)">
+                ✦ Practice & Reflect
+            </button>
+        </div>
+
+        <!-- Page 1: Explore & Learn -->
+        <div class="page active" id="page1" style="display: none;">
+            
+            <!-- Interactive Brain Map -->
+            <div class="card">
+                <h2>
+                    <div class="icon">⚡</div>
+                    Interactive Brain Map
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 1rem; line-height: 1.7;">
+                    Explore different brain regions to unlock knowledge! Start with the <strong>Prefrontal Cortex</strong> and <strong>Amygdala</strong> (already unlocked). Complete activities to unlock more regions.
+                </p>
+                <p style="color: var(--deep-teal); font-weight: 600; margin-bottom: 1.5rem;">
+                    ⚡ Click on unlocked regions • Each region = +25 NP
+                </p>
+                
+                <div class="brain-container">
+                    <svg class="brain-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Prefrontal Cortex - UNLOCKED -->
+                        <path class="brain-region" data-region="prefrontal" data-locked="false"
+                              d="M 100 150 Q 80 120, 100 90 L 180 80 Q 200 85, 200 110 L 180 160 Q 150 165, 100 150 Z" 
+                              fill="rgba(94, 234, 212, 0.3)" />
+                        
+                        <!-- Amygdala - UNLOCKED -->
+                        <ellipse class="brain-region" data-region="amygdala" data-locked="false"
+                                 cx="220" cy="220" rx="35" ry="30" 
+                                 fill="rgba(251, 191, 36, 0.3)" />
+                        
+                        <!-- Hippocampus - LOCKED -->
+                        <path class="brain-region locked-region" data-region="hippocampus" data-locked="true"
+                              d="M 250 240 Q 270 235, 280 250 L 275 270 Q 265 275, 250 270 Z" 
+                              fill="rgba(100, 100, 100, 0.2)" />
+                        
+                        <!-- Insula - LOCKED -->
+                        <ellipse class="brain-region locked-region" data-region="insula" data-locked="true"
+                                 cx="260" cy="180" rx="30" ry="25" 
+                                 fill="rgba(100, 100, 100, 0.2)" />
+                        
+                        <!-- Anterior Cingulate - LOCKED -->
+                        <path class="brain-region locked-region" data-region="cingulate" data-locked="true"
+                              d="M 180 120 Q 220 100, 260 120 L 250 140 Q 220 130, 190 140 Z" 
+                              fill="rgba(100, 100, 100, 0.2)" />
+                        
+                        <!-- Cerebellum - LOCKED -->
+                        <ellipse class="brain-region locked-region" data-region="cerebellum" data-locked="true"
+                                 cx="350" cy="300" rx="60" ry="45" 
+                                 fill="rgba(100, 100, 100, 0.2)" />
+                        
+                        <!-- Brain outline -->
+                        <path d="M 80 180 Q 70 140, 90 100 Q 110 70, 150 60 Q 200 50, 250 60 Q 300 70, 330 100 Q 360 140, 370 180 Q 380 220, 370 260 Q 350 300, 320 330 Q 280 360, 230 360 Q 180 360, 140 330 Q 100 300, 85 260 Q 75 220, 80 180 Z" 
+                              fill="none" stroke="var(--deep-teal)" stroke-width="3" opacity="0.4"/>
+                        
+                        <!-- Labels -->
+                        <text x="120" y="120" fill="var(--deep-teal)" font-size="12" font-weight="600">Prefrontal</text>
+                        <text x="185" y="225" fill="var(--deep-teal)" font-size="12" font-weight="600">Amygdala</text>
+                        <text x="285" y="250" fill="var(--slate)" font-size="12" font-weight="600" opacity="0.5">Hippo 🔒</text>
+                        <text x="230" y="175" fill="var(--slate)" font-size="12" font-weight="600" opacity="0.5">Insula 🔒</text>
+                        <text x="200" y="110" fill="var(--slate)" font-size="12" font-weight="600" opacity="0.5">ACC 🔒</text>
+                        <text x="315" y="310" fill="var(--slate)" font-size="12" font-weight="600" opacity="0.5">Cerebellum 🔒</text>
+                    </svg>
+
+                    <div id="brainInfo" class="brain-info">
+                        <!-- Brain region info will appear here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Scenario -->
+            <div class="card">
+                <h2>
+                    <div class="icon">◇</div>
+                    Real-Life Brain Science: Interactive Scenario
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 1.5rem; line-height: 1.7;">
+                    Let's see neuroscience in action! Make choices and learn how different brain regions respond.
+                </p>
+                <p style="color: var(--deep-teal); font-weight: 600; margin-bottom: 1.5rem;">
+                    ⚡ Complete scenario = +30 NP
+                </p>
+
+                <div class="scenario-container">
+                    <div class="scenario-header">
+                        <div class="scenario-icon">◆</div>
+                        <div class="scenario-content">
+                            <h3 style="color: var(--deep-teal); margin: 0;">The Text Message</h3>
+                            <p style="color: var(--slate); font-size: 0.9rem; margin: 0;">A common social situation</p>
+                        </div>
+                    </div>
+
+                    <p class="scenario-situation">
+                        You send a text to your close friend sharing something important to you. Three hours pass with no response. You check your phone and see "Read 2:47 PM." Your heart starts racing and your mind floods with thoughts...
+                    </p>
+
+                    <p style="color: var(--deep-teal); font-weight: 600; margin-bottom: 1rem;">What do you do?</p>
+
+                    <div class="scenario-choices">
+                        <div class="scenario-choice" onclick="handleScenarioChoice('amygdala')">
+                            <h5>React immediately: "Why are you ignoring me?"</h5>
+                            <p>Send another text expressing hurt and asking what's wrong. Your emotions are running high.</p>
+                        </div>
+
+                        <div class="scenario-choice" onclick="handleScenarioChoice('prefrontal')">
+                            <h5>Pause and consider alternatives</h5>
+                            <p>Take some deep breaths and remind yourself they might be busy. Wait before sending another message.</p>
+                        </div>
+
+                        <div class="scenario-choice" onclick="handleScenarioChoice('dorsal')">
+                            <h5>Shut down and disconnect</h5>
+                            <p>Feel numb and think "whatever, they don't care anyway." Stop engaging and go quiet.</p>
+                        </div>
+                    </div>
+
+                    <div class="scenario-result" id="scenarioResult">
+                        <!-- Result will appear here -->
+                    </div>
+                </div>
+
+                <div class="discussion-section">
+                    <h4>◈ Reflection Questions</h4>
+                    <div class="discussion-questions">
+                        <div class="discussion-card">
+                            <span class="discussion-type">Solo Reflection</span>
+                            <p>Which response is most like what you would actually do? No judgment—just honest noticing.</p>
+                        </div>
+                        <div class="discussion-card">
+                            <span class="discussion-type">Pair Share</span>
+                            <p>Share with a partner: What helps you pause between feeling triggered and reacting? What makes it harder?</p>
+                        </div>
+                        <div class="discussion-card">
+                            <span class="discussion-type">Group Discussion</span>
+                            <p>How do our past experiences shape which brain response gets activated? Can we rewire these patterns?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Neurotransmitter Collection -->
+            <div class="card">
+                <h2>
+                    <div class="icon">✦</div>
+                    Neurotransmitter Collection
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 1rem; line-height: 1.7;">
+                    Collect all 5 neurotransmitter cards! <strong>Dopamine</strong> is already unlocked. Complete activities to unlock the others.
+                </p>
+                <p style="color: var(--deep-teal); font-weight: 600; margin-bottom: 1.5rem;">
+                    ⚡ Click unlocked cards to learn more • Each discovery = +20 NP
+                </p>
+
+                <div class="nt-grid">
+                    <!-- Dopamine - UNLOCKED -->
+                    <div class="nt-card dopamine" data-nt="dopamine" data-locked="false" onclick="toggleNT(this)">
+                        <h3><span class="nt-symbol">◆</span> Dopamine</h3>
+                        <div class="nt-content">
+                            <p>"The Motivation Molecule"</p>
+                            <p style="font-size: 0.9rem; font-style: italic;">Drives reward-seeking, learning, and movement</p>
+                            
+                            <strong>What it does:</strong>
+                            <ul>
+                                <li>Motivation & goal-pursuit</li>
+                                <li>Pleasure & reward</li>
+                                <li>Learning & memory</li>
+                                <li>Movement coordination</li>
+                            </ul>
+                            
+                            <strong>What supports it:</strong>
+                            <ul>
+                                <li>Accomplishing small tasks</li>
+                                <li>Exercise & movement</li>
+                                <li>Music you love</li>
+                                <li>Protein-rich foods</li>
+                                <li>Celebrating wins (big & small)</li>
+                            </ul>
+                            
+                            <strong>Neurodivergent connection:</strong>
+                            <ul>
+                                <li>ADHD brains often have lower dopamine</li>
+                                <li>Why novel activities help focus</li>
+                                <li>Explains need for stimulation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Serotonin - LOCKED -->
+                    <div class="nt-card serotonin locked-card" data-nt="serotonin" data-locked="true">
+                        <div class="nt-locked-icon">🔒</div>
+                        <h3><span class="nt-symbol">◉</span> Serotonin</h3>
+                        <p style="color: var(--slate); font-size: 0.9rem;">Unlock by earning 100 NP</p>
+                    </div>
+
+                    <!-- GABA - LOCKED -->
+                    <div class="nt-card gaba locked-card" data-nt="gaba" data-locked="true">
+                        <div class="nt-locked-icon">🔒</div>
+                        <h3><span class="nt-symbol">◈</span> GABA</h3>
+                        <p style="color: var(--slate); font-size: 0.9rem;">Unlock by earning 150 NP</p>
+                    </div>
+
+                    <!-- Norepinephrine - LOCKED -->
+                    <div class="nt-card norepinephrine locked-card" data-nt="norepinephrine" data-locked="true">
+                        <div class="nt-locked-icon">🔒</div>
+                        <h3><span class="nt-symbol">▲</span> Norepinephrine</h3>
+                        <p style="color: var(--slate); font-size: 0.9rem;">Unlock by earning 200 NP</p>
+                    </div>
+
+                    <!-- Oxytocin - LOCKED -->
+                    <div class="nt-card oxytocin locked-card" data-nt="oxytocin" data-locked="true">
+                        <div class="nt-locked-icon">🔒</div>
+                        <h3><span class="nt-symbol">♡</span> Oxytocin</h3>
+                        <p style="color: var(--slate); font-size: 0.9rem;">Unlock by earning 250 NP</p>
+                    </div>
+                </div>
+
+                <div class="discussion-section">
+                    <h4>◈ Discussion Prompts</h4>
+                    <div class="discussion-questions">
+                        <div class="discussion-card">
+                            <span class="discussion-type">Solo Journaling</span>
+                            <p>Which neurotransmitter do you think you need more of right now? What could you do today to support it?</p>
+                        </div>
+                        <div class="discussion-card">
+                            <span class="discussion-type">Group Discussion</span>
+                            <p>How does understanding neurotransmitters change how you think about mental health? Does it reduce shame or stigma?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Knowledge Quiz -->
+            <div class="card">
+                <h2>
+                    <div class="icon">◉</div>
+                    Brain Knowledge Challenge
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 1.5rem; line-height: 1.7;">
+                    Test what you've learned! Each correct answer earns you Neural Points.
+                </p>
+                <p style="color: var(--deep-teal); font-weight: 600; margin-bottom: 1.5rem;">
+                    ⚡ +15 NP per correct answer
+                </p>
+
+                <div class="quiz-section">
+                    <div class="quiz-question" id="quiz1">
+                        <h4>Question 1: Which brain region is often called your "smoke alarm" because it detects threats?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkQuiz(1, 'amygdala', this)">
+                                <strong>A)</strong> Amygdala
+                            </div>
+                            <div class="quiz-option" onclick="checkQuiz(1, 'prefrontal', this)">
+                                <strong>B)</strong> Prefrontal Cortex
+                            </div>
+                            <div class="quiz-option" onclick="checkQuiz(1, 'hippocampus', this)">
+                                <strong>C)</strong> Hippocampus
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback1"></div>
+                    </div>
+
+                    <div class="quiz-question" id="quiz2">
+                        <h4>Question 2: "Neurons that fire together, wire together" describes which brain ability?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkQuiz(2, 'neuroplasticity', this)">
+                                <strong>A)</strong> Neuroplasticity
+                            </div>
+                            <div class="quiz-option" onclick="checkQuiz(2, 'dopamine', this)">
+                                <strong>B)</strong> Dopamine production
+                            </div>
+                            <div class="quiz-option" onclick="checkQuiz(2, 'synapses', this)">
+                                <strong>C)</strong> Synaptic pruning
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback2"></div>
+                    </div>
+
+                    <div class="quiz-question" id="quiz3">
+                        <h4>Question 3: Which neurotransmitter is often lower in ADHD brains?</h4>
+                        <div class="quiz-options">
+                            <div class="quiz-option" onclick="checkQuiz(3, 'serotonin', this)">
+                                <strong>A)</strong> Serotonin
+                            </div>
+                            <div class="quiz-option" onclick="checkQuiz(3, 'dopamine', this)">
+                                <strong>B)</strong> Dopamine
+                            </div>
+                            <div class="quiz-option" onclick="checkQuiz(3, 'gaba', this)">
+                                <strong>C)</strong> GABA
+                            </div>
+                        </div>
+                        <div class="quiz-feedback" id="feedback3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Group Activities -->
+            <div class="card">
+                <h2>
+                    <div class="icon">◈</div>
+                    Group Facilitation Activities
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 1.5rem; line-height: 1.7;">
+                    For facilitators: Use these activities to deepen group understanding and connection.
+                </p>
+
+                <div class="group-activity-section">
+                    <h4>◈ Structured Group Activities</h4>
+                    <div class="activity-cards">
+                        <div class="activity-card">
+                            <span class="activity-type">Small Groups (3-4)</span>
+                            <h5>Brain Region Experts</h5>
+                            <p>Assign each small group a brain region. Give them 10 minutes to become "experts" and teach the larger group using their own examples and experiences.</p>
+                        </div>
+
+                        <div class="activity-card">
+                            <span class="activity-type">Pairs</span>
+                            <h5>Nervous System Mapping</h5>
+                            <p>Partners interview each other about their nervous system states. What does each state feel like for them? What helps them shift states? Share insights with large group.</p>
+                        </div>
+
+                        <div class="activity-card">
+                            <span class="activity-type">Large Group</span>
+                            <h5>Myth-Busting Circle</h5>
+                            <p>Go around the circle asking: "What's something you used to believe about the brain that turned out to be wrong?" Discuss how these myths affected self-perception.</p>
+                        </div>
+
+                        <div class="activity-card">
+                            <span class="activity-type">Individual then Share</span>
+                            <h5>Neuroplasticity Hope Letter</h5>
+                            <p>Write a letter to yourself about one pattern you want to change. Explain the neuroscience of how change is possible. Share willingness (not content) with group.</p>
+                        </div>
+
+                        <div class="activity-card">
+                            <span class="activity-type">Movement Activity</span>
+                            <h5>Polyvagal Embodiment</h5>
+                            <p>Guide group through physically embodying each nervous system state. Ventral: open posture. Sympathetic: tense/ready. Dorsal: collapsed. Notice sensations.</p>
+                        </div>
+
+                        <div class="activity-card">
+                            <span class="activity-type">Creative Expression</span>
+                            <h5>Neurotransmitter Art</h5>
+                            <p>Each person chooses a neurotransmitter and creates a visual representation (drawing, collage, movement) of what it does and what supports it. Gallery walk.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Your Collection -->
+        <div class="page" id="page2" style="display: none;">
+            <div class="collectibles-section">
+                <h2 style="color: var(--deep-teal); margin-bottom: 1rem;">Your Neuroscience Collection</h2>
+                <p style="color: var(--slate); margin-bottom: 1.5rem;">Track your progress and see what you've discovered!</p>
+
+                <h3 style="color: var(--midnight); margin-top: 2rem; margin-bottom: 1rem;">Brain Regions Unlocked</h3>
+                <div class="collectibles-grid">
+                    <div class="collectible-item unlocked" id="collect-prefrontal">
+                        <div class="collectible-icon">⚡</div>
+                        <div class="collectible-name">Prefrontal Cortex</div>
+                    </div>
+                    <div class="collectible-item unlocked" id="collect-amygdala">
+                        <div class="collectible-icon">◆</div>
+                        <div class="collectible-name">Amygdala</div>
+                    </div>
+                    <div class="collectible-item" id="collect-hippocampus">
+                        <div class="collectible-icon">◇</div>
+                        <div class="collectible-name">Hippocampus</div>
+                    </div>
+                    <div class="collectible-item" id="collect-insula">
+                        <div class="collectible-icon">◉</div>
+                        <div class="collectible-name">Insula</div>
+                    </div>
+                    <div class="collectible-item" id="collect-cingulate">
+                        <div class="collectible-icon">◈</div>
+                        <div class="collectible-name">Ant. Cingulate</div>
+                    </div>
+                    <div class="collectible-item" id="collect-cerebellum">
+                        <div class="collectible-icon">▲</div>
+                        <div class="collectible-name">Cerebellum</div>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--midnight); margin-top: 2rem; margin-bottom: 1rem;">Neurotransmitters Discovered</h3>
+                <div class="collectibles-grid">
+                    <div class="collectible-item unlocked" id="collect-dopamine">
+                        <div class="collectible-icon">◆</div>
+                        <div class="collectible-name">Dopamine</div>
+                    </div>
+                    <div class="collectible-item" id="collect-serotonin">
+                        <div class="collectible-icon">◉</div>
+                        <div class="collectible-name">Serotonin</div>
+                    </div>
+                    <div class="collectible-item" id="collect-gaba">
+                        <div class="collectible-icon">◈</div>
+                        <div class="collectible-name">GABA</div>
+                    </div>
+                    <div class="collectible-item" id="collect-norepinephrine">
+                        <div class="collectible-icon">▲</div>
+                        <div class="collectible-name">Norepinephrine</div>
+                    </div>
+                    <div class="collectible-item" id="collect-oxytocin">
+                        <div class="collectible-icon">♡</div>
+                        <div class="collectible-name">Oxytocin</div>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--midnight); margin-top: 2rem; margin-bottom: 1rem;">Achievements Earned</h3>
+                <div class="collectibles-grid">
+                    <div class="collectible-item" id="achieve-explorer">
+                        <div class="collectible-icon">⚡</div>
+                        <div class="collectible-name">Brain Explorer</div>
+                    </div>
+                    <div class="collectible-item" id="achieve-student">
+                        <div class="collectible-icon">◉</div>
+                        <div class="collectible-name">Neuroscience Student</div>
+                    </div>
+                    <div class="collectible-item" id="achieve-collector">
+                        <div class="collectible-icon">✦</div>
+                        <div class="collectible-name">Complete Collector</div>
+                    </div>
+                    <div class="collectible-item" id="achieve-scholar">
+                        <div class="collectible-icon">◈</div>
+                        <div class="collectible-name">Brain Scholar</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <p><strong>Keep Exploring!</strong> Return to the Explore page to unlock more content. Each discovery deepens your understanding of your amazing brain.</p>
+            </div>
+        </div>
+
+        <!-- Page 3: Practice & Reflect -->
+        <div class="page" id="page3" style="display: none;">
+            <div class="card">
+                <h2>
+                    <div class="icon">✦</div>
+                    Personal Reflection Journal
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 1.5rem; line-height: 1.7;">
+                    Apply what you've learned to your own life. These prompts help you connect neuroscience to your personal experience.
+                </p>
+
+                <div class="discussion-section">
+                    <h4>◈ Deep Reflection Questions</h4>
+                    <div class="discussion-questions">
+                        <div class="discussion-card">
+                            <span class="discussion-type">Self-Awareness</span>
+                            <p><strong>Your Amygdala:</strong> When was the last time your "smoke alarm" went off? What triggered it? Looking back, was there really a threat, or was your brain being protective based on past experiences?</p>
+                        </div>
+
+                        <div class="discussion-card">
+                            <span class="discussion-type">Growth Mindset</span>
+                            <p><strong>Neuroplasticity in Action:</strong> Think of one pattern or habit you've successfully changed in your life. How long did it take? What helped? This is proof your brain CAN rewire.</p>
+                        </div>
+
+                        <div class="discussion-card">
+                            <span class="discussion-type">Body Connection</span>
+                            <p><strong>Your Nervous System States:</strong> What does each polyvagal state feel like in YOUR body? Ventral vagal (safe), sympathetic (activated), dorsal vagal (shut down). Get specific with sensations.</p>
+                        </div>
+
+                        <div class="discussion-card">
+                            <span class="discussion-type">Compassion Practice</span>
+                            <p><strong>Reducing Shame:</strong> How does understanding your brain science change how you view your struggles? Can you see your reactions as your nervous system trying to protect you, not as personal failures?</p>
+                        </div>
+
+                        <div class="discussion-card">
+                            <span class="discussion-type">Practical Application</span>
+                            <p><strong>Supporting Your Neurotransmitters:</strong> Looking at the five neurotransmitters, which one do you think needs the most support right now? What's ONE thing you could do today to support it?</p>
+                        </div>
+
+                        <div class="discussion-card">
+                            <span class="discussion-type">Future Self</span>
+                            <p><strong>60-Day Brain Change:</strong> If you practiced one new response pattern every day for 60 days, what would you choose? What would be different in your life if that new neural pathway was strong?</p>
+                        </div>
+
+                        <div class="discussion-card">
+                            <span class="discussion-type">Relationship Insight</span>
+                            <p><strong>Co-Regulation:</strong> Who in your life helps regulate your nervous system (brings you back to ventral vagal)? What do they do that helps? How can you ask for more of that?</p>
+                        </div>
+
+                        <div class="discussion-card">
+                            <span class="discussion-type">Neurodivergent Affirmation</span>
+                            <p><strong>Different, Not Deficit:</strong> If you're neurodivergent, how does understanding your brain's unique wiring change your self-perception? What "symptoms" can you reframe as differences in processing?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>
+                    <div class="icon">◈</div>
+                    Integration & Next Steps
+                </h2>
+                <p style="color: var(--slate); margin-bottom: 1.5rem; line-height: 1.7;">
+                    Neuroscience knowledge is powerful, but it's just the beginning. Here's how to keep this journey going.
+                </p>
+
+                <div style="padding: 2rem; background: linear-gradient(135deg, rgba(94, 234, 212, 0.08) 0%, rgba(147, 197, 253, 0.08) 100%); border-radius: 16px;">
+                    <h3 style="color: var(--deep-teal); margin-bottom: 1rem;">Taking It Forward</h3>
+                    
+                    <h4 style="color: var(--midnight); margin-top: 1.5rem; margin-bottom: 0.75rem;">Daily Practices:</h4>
+                    <ul style="color: var(--slate); line-height: 2; padding-left: 1.5rem;">
+                        <li><strong>Morning Check-In:</strong> "What nervous system state am I starting the day in?"</li>
+                        <li><strong>Pattern Noticing:</strong> When you react strongly, pause and ask "Which brain region is online right now?"</li>
+                        <li><strong>Neurotransmitter Support:</strong> Choose one action daily that supports your brain chemistry</li>
+                        <li><strong>Neuroplasticity Practice:</strong> Deliberately practice your new response pattern</li>
+                    </ul>
+
+                    <h4 style="color: var(--midnight); margin-top: 1.5rem; margin-bottom: 0.75rem;">With Others:</h4>
+                    <ul style="color: var(--slate); line-height: 2; padding-left: 1.5rem;">
+                        <li><strong>Shared Language:</strong> Use brain terms with safe people ("I think my amygdala is activated")</li>
+                        <li><strong>Co-Regulation:</strong> Ask for help getting back to ventral vagal when dysregulated</li>
+                        <li><strong>Compassion:</strong> Extend understanding of nervous system states to others</li>
+                        <li><strong>Education:</strong> Share what you've learned (teaching deepens your own understanding)</li>
+                    </ul>
+
+                    <h4 style="color: var(--midnight); margin-top: 1.5rem; margin-bottom: 0.75rem;">Remember:</h4>
+                    <p style="color: var(--deep-teal); font-weight: 600; font-style: italic; margin-top: 1rem;">
+                        Your brain is not fixed. Every moment of awareness, every new response, every act of self-compassion is literally changing your neural pathways. Change takes time (usually 60-90 days for solid new patterns), but it IS possible. You're not broken—you're a brain doing exactly what it was wired to do. And wiring can change.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // GAME STATE
+        let gameState = {
+            xp: 0,
+            level: 1,
+            unlockedRegions: ['prefrontal', 'amygdala'],
+            unlockedNTs: ['dopamine'],
+            completedQuizzes: [],
+            scenarioComplete: false,
+            viewedRegions: []
+        };
+
+        // Load saved state
+        function loadGameState() {
+            const saved = localStorage.getItem('brainGameState');
+            if (saved) {
+                gameState = JSON.parse(saved);
+                updateUI();
+                updateCollectibles();
+            }
+        }
+
+        // Save state
+        function saveGameState() {
+            localStorage.setItem('brainGameState', JSON.stringify(gameState));
+        }
+
+        // Start Journey
+        function startJourney() {
+            document.querySelector('.meditation-section').style.display = 'none';
+            document.getElementById('mainHeader').style.display = 'block';
+            document.getElementById('navigation').style.display = 'flex';
+            document.getElementById('page1').style.display = 'block';
+            awardXP(10, '⚡', 'Journey Begins!', 'Welcome to your brain adventure!');
+        }
+
+        // Page Navigation
+        function showPage(pageIndex) {
+            const pages = document.querySelectorAll('.page');
+            const pills = document.querySelectorAll('.nav-pill');
+            
+            pages.forEach((page, index) => {
+                page.style.display = index === pageIndex ? 'block' : 'none';
+                page.classList.toggle('active', index === pageIndex);
+            });
+            
+            pills.forEach((pill, index) => {
+                pill.classList.toggle('active', index === pageIndex);
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // XP & LEVELING SYSTEM
+        function awardXP(amount, icon, title, text) {
+            gameState.xp += amount;
+            
+            // Check for level up
+            const oldLevel = gameState.level;
+            gameState.level = Math.floor(gameState.xp / 100) + 1;
+            
+            updateUI();
+            saveGameState();
+            
+            // Show celebration
+            showCelebration(icon, title, text, amount);
+            
+            // Check for unlocks
+            checkUnlocks();
+            
+            // Level up celebration
+            if (gameState.level > oldLevel) {
+                setTimeout(() => {
+                    showCelebration('◈', 'Level Up!', `You've reached Level ${gameState.level}!`, 0);
+                }, 1500);
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('xpDisplay').textContent = `${gameState.xp} NP`;
+            document.getElementById('levelDisplay').textContent = `Level ${gameState.level}`;
+            
+            // Update progress bar
+            const nextLevel = gameState.level * 100;
+            const currentLevelXP = gameState.xp - ((gameState.level - 1) * 100);
+            const percentage = (currentLevelXP / 100) * 100;
+            document.getElementById('brainPowerFill').style.width = percentage + '%';
+        }
+
+        function showCelebration(icon, title, text, xp) {
+            document.getElementById('celebrationIcon').textContent = icon;
+            document.getElementById('celebrationTitle').textContent = title;
+            document.getElementById('celebrationText').textContent = text;
+            document.getElementById('celebrationXP').textContent = xp > 0 ? `+${xp} NP` : '';
+            document.getElementById('celebrationXP').style.display = xp > 0 ? 'block' : 'none';
+            document.getElementById('celebrationOverlay').classList.add('show');
+        }
+
+        function closeCelebration() {
+            document.getElementById('celebrationOverlay').classList.remove('show');
+        }
+
+        // UNLOCKING SYSTEM
+        function checkUnlocks() {
+            const xp = gameState.xp;
+            
+            // Unlock brain regions
+            const regionUnlocks = {
+                'hippocampus': 50,
+                'insula': 100,
+                'cingulate': 150,
+                'cerebellum': 200
+            };
+            
+            for (let region in regionUnlocks) {
+                if (xp >= regionUnlocks[region] && !gameState.unlockedRegions.includes(region)) {
+                    unlockBrainRegion(region);
+                }
+            }
+            
+            // Unlock neurotransmitters
+            const ntUnlocks = {
+                'serotonin': 100,
+                'gaba': 150,
+                'norepinephrine': 200,
+                'oxytocin': 250
+            };
+            
+            for (let nt in ntUnlocks) {
+                if (xp >= ntUnlocks[nt] && !gameState.unlockedNTs.includes(nt)) {
+                    unlockNeurotransmitter(nt);
+                }
+            }
+            
+            // Unlock achievements
+            if (xp >= 50 && !document.getElementById('achieve-explorer').classList.contains('unlocked')) {
+                document.getElementById('achieve-explorer').classList.add('unlocked');
+            }
+            if (xp >= 150 && !document.getElementById('achieve-student').classList.contains('unlocked')) {
+                document.getElementById('achieve-student').classList.add('unlocked');
+            }
+            if (gameState.unlockedNTs.length === 5 && !document.getElementById('achieve-collector').classList.contains('unlocked')) {
+                document.getElementById('achieve-collector').classList.add('unlocked');
+            }
+            if (xp >= 300 && !document.getElementById('achieve-scholar').classList.contains('unlocked')) {
+                document.getElementById('achieve-scholar').classList.add('unlocked');
+            }
+            
+            updateCollectibles();
+        }
+
+        function unlockBrainRegion(region) {
+            gameState.unlockedRegions.push(region);
+            const element = document.querySelector(`[data-region="${region}"]`);
+            element.classList.remove('locked-region');
+            element.classList.add('unlocked');
+            element.setAttribute('data-locked', 'false');
+            saveGameState();
+            showCelebration('⚡', 'Brain Region Unlocked!', `You can now explore the ${region}!`, 0);
+            updateCollectibles();
+        }
+
+        function unlockNeurotransmitter(nt) {
+            gameState.unlockedNTs.push(nt);
+            const card = document.querySelector(`[data-nt="${nt}"]`);
+            card.classList.remove('locked-card');
+            card.classList.add('unlocked-card');
+            card.setAttribute('data-locked', 'false');
+            card.onclick = function() { toggleNT(this); };
+            saveGameState();
+            showCelebration('✦', 'Neurotransmitter Discovered!', `You've unlocked ${nt}!`, 20);
+            setTimeout(() => {
+                awardXP(20, '✦', 'Discovery Bonus!', `New neurotransmitter: ${nt}`);
+            }, 1500);
+            updateCollectibles();
+        }
+
+        function updateCollectibles() {
+            // Update brain regions
+            gameState.unlockedRegions.forEach(region => {
+                const collectible = document.getElementById(`collect-${region}`);
+                if (collectible) collectible.classList.add('unlocked');
+            });
+            
+            // Update neurotransmitters
+            gameState.unlockedNTs.forEach(nt => {
+                const collectible = document.getElementById(`collect-${nt}`);
+                if (collectible) collectible.classList.add('unlocked');
+            });
+        }
+
+        // BRAIN REGIONS
+        const brainRegions = {
+            prefrontal: {
+                title: 'Prefrontal Cortex',
+                subtitle: 'The Executive Control Center',
+                description: 'Your brain\'s CEO. Handles planning, decision-making, impulse control, and emotional regulation.',
+                functions: ['Executive function', 'Impulse control', 'Working memory', 'Attention & focus'],
+                discussion: 'When do you notice your prefrontal cortex going offline? (Hint: when you\'re stressed, tired, or triggered, it\'s harder to "think straight")'
+            },
+            amygdala: {
+                title: 'Amygdala',
+                subtitle: 'The Threat Detector',
+                description: 'Your brain\'s smoke alarm. Constantly scanning for danger and triggering emotional responses.',
+                functions: ['Threat detection', 'Fear & anxiety', 'Emotional memory', 'Fight-flight-freeze'],
+                discussion: 'Can you think of a time your amygdala fired when there wasn\'t actually a real threat? What was it reacting to?'
+            },
+            hippocampus: {
+                title: 'Hippocampus',
+                subtitle: 'The Memory Maker',
+                description: 'Turns experiences into memories and helps you understand context - "this is then, that is now."',
+                functions: ['Memory formation', 'Spatial navigation', 'Context processing', 'Learning'],
+                discussion: 'How does understanding that trauma can affect the hippocampus change how you view PTSD or intrusive memories?'
+            },
+            insula: {
+                title: 'Insula',
+                subtitle: 'The Body Awareness Hub',
+                description: 'Your brain\'s connection to your body. Helps you sense what\'s happening inside you.',
+                functions: ['Body awareness (interoception)', 'Emotion processing', 'Empathy', 'Pain perception'],
+                discussion: 'How good are you at noticing your internal body signals (hunger, fatigue, tension)? What gets in the way?'
+            },
+            cingulate: {
+                title: 'Anterior Cingulate Cortex',
+                subtitle: 'The Conflict Monitor',
+                description: 'Notices when things don\'t match up and helps you adjust and regulate emotions.',
+                functions: ['Conflict monitoring', 'Error detection', 'Emotional regulation', 'Attention'],
+                discussion: 'This region can be overactive in OCD and anxiety. How might understanding this reduce self-judgment?'
+            },
+            cerebellum: {
+                title: 'Cerebellum',
+                subtitle: 'The Coordination Master',
+                description: 'Coordinates movement, thoughts, emotions, and learning. Makes practiced things automatic.',
+                functions: ['Movement coordination', 'Motor learning', 'Cognitive coordination', 'Timing'],
+                discussion: 'What\'s something you\'ve practiced so much it became automatic? That\'s your cerebellum freeing up your conscious brain.'
+            }
+        };
+
+        // Brain Region Click Handler
+        document.querySelectorAll('.brain-region').forEach(region => {
+            region.addEventListener('click', function() {
+                const regionKey = this.getAttribute('data-region');
+                const isLocked = this.getAttribute('data-locked') === 'true';
+                
+                if (isLocked) {
+                    return; // Can't click locked regions
+                }
+                
+                const data = brainRegions[regionKey];
+                const infoDiv = document.getElementById('brainInfo');
+                
+                // Award XP if not viewed before
+                if (!gameState.viewedRegions.includes(regionKey)) {
+                    gameState.viewedRegions.push(regionKey);
+                    awardXP(25, '⚡', 'Brain Region Explored!', `You learned about the ${data.title}!`);
+                }
+                
+                // Remove active class from all regions
+                document.querySelectorAll('.brain-region').forEach(r => r.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Display info
+                infoDiv.innerHTML = `
+                    <h3>${data.title}</h3>
+                    <p style="color: var(--deep-teal); font-style: italic; margin-bottom: 1rem;">${data.subtitle}</p>
+                    <p style="margin-bottom: 1rem;"><strong>What it does:</strong> ${data.description}</p>
+                    
+                    <div style="margin: 1rem 0;">
+                        <strong style="color: var(--deep-teal);">Key Functions:</strong>
+                        <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                            ${data.functions.map(f => `<li>${f}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="discussion-section">
+                        <h4>◈ Reflection Question</h4>
+                        <div class="discussion-card">
+                            <p>${data.discussion}</p>
+                        </div>
+                    </div>
+                `;
+                
+                infoDiv.classList.add('show');
+                infoDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        });
+
+        // SCENARIO HANDLER
+        const scenarioResponses = {
+            amygdala: {
+                title: 'Amygdala-Driven Response',
+                brain: 'Your amygdala detected a threat ("they don\'t care about me") and activated your fight-or-flight response. This happened FAST—faster than your thinking brain could catch up.',
+                result: 'You might send a reactive message you later regret, or escalate conflict. Your friend might feel attacked and get defensive.',
+                learn: 'The amygdala is trying to protect you from rejection, but it doesn\'t always have accurate information. It can\'t tell the difference between "read but busy" and "deliberately ignoring."',
+                better: 'Notice the physical sensations (racing heart, tension). This is your cue to PAUSE before acting. Take 3 deep breaths to bring your prefrontal cortex back online.'
+            },
+            prefrontal: {
+                title: 'Prefrontal Cortex Engaged',
+                brain: 'You activated your prefrontal cortex—the part of your brain that can pause, consider alternatives, and choose a response instead of reacting automatically.',
+                result: 'You give your friend space. Later they text: "Sorry! Was in a meeting and wanted to respond properly. Let\'s talk tonight?" You feel relieved you didn\'t react.',
+                learn: 'When you pause between stimulus and response, you create space for your executive brain to come online. This is emotional regulation in action.',
+                better: 'This IS the better response! You\'ve demonstrated neuroplasticity—choosing a new pattern. Keep practicing this. Each time strengthens the pathway.'
+            },
+            dorsal: {
+                title: 'Dorsal Vagal Shutdown',
+                brain: 'Your nervous system dropped into dorsal vagal—the freeze/shutdown state. This happens when the threat feels overwhelming and you can\'t fight or flee.',
+                result: 'You disconnect emotionally. Stop texting them. Feel numb or "whatever." This protects you from pain but also from connection.',
+                learn: 'Shutdown is a protective mechanism, but it keeps you isolated. Your brain is saying "connection is dangerous, better to be alone." But you need connection to heal.',
+                better: 'Recognize shutdown as a nervous system state, not truth about the relationship. Gentle movement (walk, stretch) can help bring you back to ventral vagal. Then reach out when regulated.'
+            }
+        };
+
+        function handleScenarioChoice(choice) {
+            if (gameState.scenarioComplete) return;
+            
+            const response = scenarioResponses[choice];
+            const resultDiv = document.getElementById('scenarioResult');
+            
+            resultDiv.innerHTML = `
+                <h4>${response.title}</h4>
+                <p style="margin-bottom: 1rem;"><strong>What happened in your brain:</strong> ${response.brain}</p>
+                <p style="margin-bottom: 1rem;"><strong>Likely outcome:</strong> ${response.result}</p>
+                <p style="margin-bottom: 1rem;"><strong>The science:</strong> ${response.learn}</p>
+                <p style="margin-bottom: 1rem;"><strong>A better pathway:</strong> ${response.better}</p>
+                
+                <div class="info-box" style="margin-top: 1.5rem;">
+                    <p><strong>Remember:</strong> There's no shame in any of these responses. Your brain is doing what it was wired to do based on your experiences. Awareness is the first step to creating new patterns.</p>
+                </div>
+            `;
+            
+            resultDiv.classList.add('show');
+            
+            if (!gameState.scenarioComplete) {
+                gameState.scenarioComplete = true;
+                awardXP(30, '◇', 'Scenario Complete!', 'You understand how your brain responds to triggers!');
+            }
+        }
+
+        // NEUROTRANSMITTER TOGGLE
+        function toggleNT(card) {
+            const isLocked = card.getAttribute('data-locked') === 'true';
+            if (isLocked) return;
+            
+            const content = card.querySelector('.nt-content');
+            const isExpanded = content.classList.contains('expanded');
+            
+            // Collapse all others
+            document.querySelectorAll('.nt-content').forEach(c => c.classList.remove('expanded'));
+            
+            // Toggle this one
+            if (!isExpanded) {
+                content.classList.add('expanded');
+                
+                // Award XP first time viewing
+                const nt = card.getAttribute('data-nt');
+                if (!gameState.viewedRegions.includes(nt)) {
+                    gameState.viewedRegions.push(nt);
+                    awardXP(20, '✦', 'Neurotransmitter Explored!', `You learned about ${nt}!`);
+                }
+            }
+        }
+
+        // QUIZ SYSTEM
+        const quizAnswers = {
+            1: 'amygdala',
+            2: 'neuroplasticity',
+            3: 'dopamine'
+        };
+
+        const quizExplanations = {
+            1: 'Correct! The amygdala acts like a smoke alarm, constantly scanning for threats and triggering emotional responses—especially fear and anxiety. It reacts FAST, often before your thinking brain (prefrontal cortex) can catch up.',
+            2: 'Correct! Neuroplasticity is the brain\'s ability to form new neural connections throughout life. "Neurons that fire together, wire together" means that when you repeatedly think, feel, or act in certain ways, those neural pathways strengthen. This is how habits form—and how they can be changed!',
+            3: 'Correct! ADHD brains typically have lower levels of dopamine, which affects motivation, reward-seeking, attention, and impulse control. This isn\'t a moral failing or "not trying hard enough"—it\'s a neurobiological difference in how the brain is wired.'
+        };
+
+        function checkQuiz(quizNum, answer, element) {
+            if (gameState.completedQuizzes.includes(quizNum)) return;
+            
+            const correct = answer === quizAnswers[quizNum];
+            const feedback = document.getElementById(`feedback${quizNum}`);
+            
+            // Mark option
+            element.classList.add(correct ? 'correct' : 'incorrect');
+            
+            // Show feedback
+            feedback.innerHTML = `
+                <p style="color: ${correct ? 'var(--success-green)' : 'var(--warm-rose)'}; font-weight: 600; margin-bottom: 0.5rem;">
+                    ${correct ? '✓ Correct!' : '✗ Not quite'}
+                </p>
+                ${correct ? `<p style="color: var(--slate);">${quizExplanations[quizNum]}</p>` : '<p style="color: var(--slate);">Try another answer!</p>'}
+            `;
+            feedback.classList.add('show');
+            
+            // Award XP
+            if (correct && !gameState.completedQuizzes.includes(quizNum)) {
+                gameState.completedQuizzes.push(quizNum);
+                setTimeout(() => {
+                    awardXP(15, '◉', 'Correct Answer!', 'Your brain knowledge is growing!');
+                }, 500);
+            }
+            
+            // Disable other options after correct
+            if (correct) {
+                element.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.style.pointerEvents = 'none';
+                    opt.style.opacity = opt === element ? '1' : '0.5';
+                });
+            }
+        }
+
+        // INITIALIZE
+        window.addEventListener('load', () => {
+            loadGameState();
+        });
+    </script>
+</body>
+</html>
